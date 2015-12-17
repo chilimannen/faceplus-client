@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html="http://xmlns.jcp.org/jsf/html"
+      xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:face="http://xmlns.jcp.org/jsf/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:prime="http://primefaces.org/ui" xmlns:jstl="http://java.sun.com/jstl/core">
+
+<interface:include src="header.xhtml"/>
+
+
+<html:outputScript>
+    setInterval(function () {
+        var textbox = jQuery('.message-content');
+        textbox.focus();
+    }, 200);
+</html:outputScript>
+
+
+<html:body>
+
+    <interface:include src="navbar-session.xhtml"/>
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-xs-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Threads</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="list-group">
+
+                            <html:form id="threads">
+                                <prime:poll interval="3" update="threads"/>
+                                <interface:repeat value="#{messaging.threads}" var="message">
+
+                                    <html:commandLink action="#{messaging.openThread(message.sender.actor)}">
+                                        <div class="a list-group-item">
+                                            <h4 class="list-group-item-heading">
+                                                <html:outputText
+                                                        value="#{message.sender.firstName} #{message.sender.lastName}"/>
+                                            </h4>
+
+                                            <p class="list-group-item-text">
+                                                <html:outputText value="#{message.content}"/>
+                                            </p>
+                                        </div>
+                                        <face:ajax render="@form :messagebox :composer :messagebox-title"
+                                                   execute="@form"/>
+                                    </html:commandLink>
+
+                                </interface:repeat>
+                            </html:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <html:form id="messagebox-title">
+                            <h3 class="panel-title">Messaging <html:outputText value="#{messaging.thread}"/></h3>
+                        </html:form>
+                    </div>
+                    <div class="panel-body messager-body">
+
+                        <html:form id="messagebox">
+                            <prime:poll interval="1" update=":messagebox"/>
+                            <interface:repeat value="#{messaging.messages}" var="message">
+
+                                <div class="row">
+                                    <div class="well well-sm #{(message.sender.actor eq home.username) ? '' : 'pull-right'}">
+                                        <h4 class="#{(message.sender.actor eq home.username) ? 'text-info' : 'text-primary'}">
+                                            <html:outputText value="#{message.content}"/></h4>
+
+                                        <div class="row">
+                                            <h6 class="small message-date #{(message.sender.actor eq home.username) ? '' : 'pull-right'}">
+                                                <html:outputText
+                                                        value="#{message.date}"/></h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </interface:repeat>
+                        </html:form>
+
+                        <html:form id="composer">
+                            <div class="#{messaging.thread == null ? 'hidden' : ''}">
+                                <html:inputText styleClass="form-control message-content" id="content"
+                                                value="#{messaging.content}"
+                                                html5:placeholder="Message text.. [Enter]" html5:autofocus="true"
+                                                required="true"/>
+
+                                <html:commandButton styleClass="btn btn-block btn-primary" value="Send" id="sender"
+                                                    action="#{messaging.sendMessage}">
+                                    <face:ajax execute="@form" render="@form :messagebox"/>
+                                </html:commandButton>
+                            </div>
+
+                            <div class="#{messaging.thread == null ? '' : 'hidden'}">
+                                <h5>
+                                    <span class="text-info">Select an existing thread or start a new from a friends profile.</span>
+                                </h5>
+                            </div>
+                        </html:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <interface:include src="footer.xhtml"/>
+    </div>
+
+</html:body>
+</html>

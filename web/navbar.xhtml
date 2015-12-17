@@ -1,0 +1,39 @@
+<nav class="navbar navbar-default" xmlns:html="http://java.sun.com/jsf/html"
+     xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:face="http://java.sun.com/jsf/core">
+
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="icon-bar"/>
+                <span class="icon-bar"/>
+                <span class="icon-bar"/>
+            </button>
+            <a class="navbar-brand" href="index.xhtml">Face+</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-fixed-top" id="bs-example-navbar-collapse-1" aria-expanded="true">
+            <html:form class="navbar-form navbar-right" role="login">
+
+                <c:if test="#{account.loginError}">
+                    <p class="text-danger">Authentication Error.</p>
+                </c:if>
+
+                <div class="form-group">
+                    <html:inputText class="form-control" id="username" label="username" html5:placeholder="Username"
+                                    value="#{account.username}"/>
+                </div>
+
+                <div class="form-group">
+                    <html:inputSecret class="form-control" id="password" label="password" html5:placeholder="Password"
+                                      value="#{account.password}"/>
+                </div>
+
+                <html:commandButton class="btn btn-info" value="Login" action="#{account.login}">
+                    <face:ajax execute="@form" render="@form"/>
+                </html:commandButton>
+            </html:form>
+        </div>
+    </div>
+</nav>

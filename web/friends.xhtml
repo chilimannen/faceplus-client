@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html="http://xmlns.jcp.org/jsf/html"
+      xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:face="http://xmlns.jcp.org/jsf/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:prime="http://primefaces.org/ui"
+      xmlns:jstl="http://java.sun.com/jstl/core">
+
+<interface:include src="header.xhtml"/>
+
+<body>
+
+<interface:include src="navbar-session.xhtml"/>
+
+<div class="container-fluid">
+
+    <html:form styleClass="row ${friends.requests.size() == 0 ? 'hidden' : 'visible'}" id="friendrequests">
+        <div class="col-xs-4 col-xs-offset-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Friend requests
+                </div>
+                <div class="panel-body">
+
+                    <prime:poll interval="5" update=":friendrequests"/>
+
+                    <interface:repeat value="#{friends.requests}" var="friendrequest">
+                        <div class="col-xs-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-body">
+
+                                    <html:commandLink action="profile?faces-redirect=true">
+                                        <face:setPropertyActionListener target="#{profile.username}"
+                                                                        value="#{friendrequest.actor}"/>
+
+                                        <div class="col-xs-6">
+                                            <prime:graphicImage value="#{friends.profileImage}"
+                                                                styleClass="img-thumbnail">
+                                                <face:param name="account" value="#{friendrequest.id}"/>
+                                            </prime:graphicImage>
+                                        </div>
+                                    </html:commandLink>
+
+                                    <div class="col-xs-4 col-xs-offset-2">
+                                        <div class="pull-right">
+                                            <html:outputText value="#{friendrequest.actor}"/>
+                                            <br/>
+                                            <html:outputText value="#{friendrequest.firstName}"/>&nbsp;
+                                            <html:outputText value="#{friendrequest.lastName}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <html:commandLink styleClass="btn btn-default pull-right topmargin18"
+                                                          html5:data-toggle="tooltip" html5:data-placement="top"
+                                                          html5:data-original-title="Accept"
+                                                          action="#{friends.accept(friendrequest.actor)}">
+                                            <face:ajax execute="@form"
+                                                       render="@form :friendrequests :friendlist"/>
+                                            <span class="glyphicon glyphicon-ok text-success" style="z-index: 2;"
+                                                  aria-hidden="true"> </span>
+                                        </html:commandLink>
+
+                                        <html:commandLink styleClass="btn btn-default pull-right topmargin18"
+                                                          action="#{friends.decline(friendrequest.actor)}"
+                                                          html5:data-toggle="tooltip" html5:data-placement="top"
+                                                          html5:data-original-title="Decline">
+                                            <face:ajax execute="@form" render="@form :friendrequests"/>
+                                            <span class="glyphicon glyphicon-remove text-danger" style="z-index: 2;"
+                                                  aria-hidden="true"> </span>
+                                        </html:commandLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </interface:repeat>
+                </div>
+            </div>
+        </div>
+    </html:form>
+
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+            <!-- friend search -->
+            <html:form>
+                <html:inputText styleClass="form-control" id="search" value="#{friends.search}"
+                                html5:placeholder="Search by name or username"
+                                html5:autofocus="true">
+                    <face:ajax event="keyup" render=":result"/>
+                </html:inputText>
+            </html:form>
+            <hr/>
+        </div>
+    </div>
+
+    <html:form id="result">
+
+        <jstl:if test="#{friends.searchResult.size() != 0}">
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2">
+                    <!-- search results -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Results
+                        </div>
+                        <div class="panel-body">
+                            <interface:repeat value="#{friends.searchResult}" var="friend">
+                                <div class="col-xs-3">
+                                    <div class="panel panel-default">
+
+                                        <div class="panel-body">
+                                            <div class="row text-center">
+                                                <html:outputText value="#{friend.actor}"/>
+                                            </div>
+
+                                            <div class="row text-center">
+                                                <html:commandLink action="profile?faces-redirect=true">
+                                                    <face:setPropertyActionListener target="#{profile.username}"
+                                                                                    value="#{friend.actor}"/>
+
+                                                    <prime:graphicImage
+                                                            value="#{friends.profileImage}"
+                                                            styleClass="img-thumbnail center-block">
+                                                        <face:param name="account" value="#{friend.id}"/>
+                                                    </prime:graphicImage>
+                                                </html:commandLink>
+                                            </div>
+
+                                            <div class="row text-center">
+                                                <html:outputText value="#{friend.firstName}"/>&nbsp;
+                                                <html:outputText value="#{friend.lastName}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </interface:repeat>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </jstl:if>
+    </html:form>
+
+
+    <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+            <!-- current friends -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Friends
+                </div>
+                <div class="panel-body">
+
+                    <html:form id="friendlist">
+
+                        <interface:repeat value="#{friends.friendList}" var="friend">
+
+                            <div class="col-xs-3">
+                                <html:commandLink action="profile?faces-redirect=true">
+                                    <face:setPropertyActionListener target="#{profile.username}"
+                                                                    value="#{friend.actor}"/>
+
+                                    <prime:graphicImage value="#{friends.profileImage}"
+                                                        styleClass="img-thumbnail pull-left"
+                                                        html5:data-toggle="tooltip" html5:data-placement="bottom"
+                                                        html5:data-original-title="#{friend.firstName}&nbsp;#{friend.lastName}">
+                                        <face:param name="account" value="#{friend.id}"/>
+                                    </prime:graphicImage>
+                                </html:commandLink>
+                            </div>
+
+                        </interface:repeat>
+
+                    </html:form>
+                </div>
+            </div>
+        </div>
+
+        <interface:include src="footer.xhtml"/>
+    </div>
+</div>
+
+</body>
+</html>

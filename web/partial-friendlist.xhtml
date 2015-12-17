@@ -1,0 +1,27 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:html="http://xmlns.jcp.org/jsf/html"
+     xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+     xmlns:face="http://xmlns.jcp.org/jsf/core"
+     xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:prime="http://primefaces.org/ui">
+
+
+    <div class="col-xs-2 desktop-only">
+        <ul class="nav nav-pills">
+            <html:form id="recentfriends">
+                <prime:poll interval="5" update="recentfriends"/>
+                <interface:repeat value="#{home.friendList}" var="friend">
+                    <li>
+                        <html:commandLink action="profile?faces-redirect=true">
+                            <face:setPropertyActionListener value="#{friend.actor}"
+                                                            target="#{profile.username}"/>
+                            <html:outputText value="#{friend.firstName}"/>
+                            &#160;
+                            <html:outputText value="#{friend.lastName}"/>
+                        </html:commandLink>
+                    </li>
+                </interface:repeat>
+            </html:form>
+        </ul>
+    </div>
+</div>

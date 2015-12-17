@@ -1,0 +1,51 @@
+<div>
+    <nav class="navbar navbar-default navbar-fixed-top" xmlns:html="http://java.sun.com/jsf/html">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="home.xhtml">Face+</a>
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"/>
+                    <span class="icon-bar"/>
+                    <span class="icon-bar"/>
+                </button>
+            </div>
+
+            <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="true">
+
+
+                <html:form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><html:commandLink action="#{stream.load}"
+                                              value="Stream"/></li>
+                        <li><html:commandLink action="#{messaging.load}"
+                                              value="Messaging"/></li>
+                        <li><html:commandLink action="#{friends.load}"
+                                              value="Friends"/></li>
+                        <li><html:commandLink action="#{home.load}"
+                                              value="#{account.username}"/></li>
+
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="false">
+                                <span class="caret"/></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><html:commandLink action="#{settings.load}"
+                                                      value="Settings"/></li>
+                                <li class="divider"/>
+                                <li><html:commandLink action="#{account.logout}"
+                                                      value="Logout"/></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </html:form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row" style="margin-bottom: 76px;">
+    </div>
+</div>

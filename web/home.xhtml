@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html="http://xmlns.jcp.org/jsf/html"
+      xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:face="http://xmlns.jcp.org/jsf/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:prime="http://primefaces.org/ui">
+
+<interface:include src="header.xhtml"/>
+
+<body>
+
+<interface:include src="navbar-session.xhtml"/>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-xs-2 col-xs-offset-1">
+            <html:outputLabel value="#{home.username}"/>
+            <prime:graphicImage value="#{home.profileImage}" styleClass="img-thumbnail" cache="false"/>
+            <br/>
+            <html:outputLabel value="#{home.firstName}"/>&nbsp;
+            <html:outputLabel value="#{home.lastName}"/><br/>
+            <html:outputLabel value="#{home.age}"/><br/>
+            <html:outputLabel value="#{home.country}"/><br/>
+        </div>
+
+        <div class="col-xs-6">
+
+            <html:form>
+                <html:inputTextarea styleClass="form-control" id="content" value="#{home.content}"
+                                    html5:placeholder="Message text.." html5:autofocus="true" required="true"/>
+
+                <html:commandButton styleClass="btn btn-block btn-primary" value="Post to log"
+                                    html5:data-toggle="tooltip" html5:data-placement="bottom"
+                                    html5:data-original-title="This post will be visible on your wall and in your friends stream."
+                                    action="#{home.post}">
+                    <face:ajax execute="@form" render="@form :posts"/>
+                </html:commandButton>
+            </html:form>
+
+            <hr/>
+
+        </div>
+
+        <interface:include src="partial-friendlist.xhtml"/>
+
+
+        <div class="col-xs-6">
+
+            <html:form id="posts">
+                <prime:poll interval="5" update="posts"/>
+                <interface:repeat value="#{home.posts}" var="post">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+
+                            <html:commandLink styleClass="text-primary"
+                                              rendered="#{post.sender.actor ne home.username}"
+                                              action="profile?faces-redirect=true">
+                                <face:setPropertyActionListener value="#{post.sender.actor}"
+                                                                target="#{profile.username}"/>
+                                <html:outputText value="#{post.sender.firstName}"/>&nbsp;
+                                <html:outputText value="#{post.sender.lastName}"/>
+                            </html:commandLink>
+
+                            <html:outputText rendered="#{post.sender.actor eq home.username}"
+                                             value="#{post.sender.firstName}"/>&nbsp;
+                            <html:outputText rendered="#{post.sender.actor eq home.username}"
+                                             value="#{post.sender.lastName}"/>
+
+                            <div class="pull-right">
+                                <html:outputText value="#{post.date}"/>
+
+
+                                <html:commandLink action="#{home.removePost(post.id)}"
+                                                  html5:data-toggle="tooltip" html5:data-placement="top"
+                                                  html5:data-original-title="Remove">
+                                    <face:ajax execute="@form" render="@form"/>
+
+                                    <span class="glyphicon glyphicon-remove text-danger" style="z-index: 2;"
+                                          aria-hidden="true"> </span>
+                                </html:commandLink>
+                            </div>
+
+                        </div>
+                        <div class="panel-body">
+                            <html:outputText value="#{post.content}"/>
+                        </div>
+                    </div>
+                </interface:repeat>
+            </html:form>
+        </div>
+
+
+        <interface:include src="footer.xhtml"/>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html="http://xmlns.jcp.org/jsf/html"
+      xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:face="http://xmlns.jcp.org/jsf/core"
+      xmlns:prime="http://primefaces.org/ui"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough" xmlns:jstl="http://java.sun.com/jstl/core">
+
+<interface:include src="header.xhtml"/>
+
+<body>
+
+<interface:include src="navbar-session.xhtml"/>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-xs-4 col-xs-offset-4">
+
+            <html:form enctype="multipart/form-data" styleClass="form-horizontal">
+                <fieldset>
+                    <legend>Settings</legend>
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <html:inputText value="#{settings.firstName}" class="form-control"
+                                            html5:placeholder="Firstname"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <html:inputText value="#{settings.lastName}" class="form-control"
+                                            html5:placeholder="Lastname"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <html:inputText value="${settings.age}" id="age" class="form-control"
+                                            html5:placeholder="Age">
+                            </html:inputText>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <html:inputText value="#{settings.country}" class="form-control"
+                                            html5:placeholder="Country"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <prime:fileUpload fileUploadListener="#{settings.uploadImage}" mode="advanced"
+                                              styleClass="imageinput hidden"
+                                              auto="true"/>
+
+                            <div class="span6" style="text-align: center;">
+                                <input type="button" onclick="jQuery('.imageinput :input').click(); return false;"
+                                       class="btn btn-xs btn-default" value="Profile image"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-lg-10">
+                            <jstl:if test="#{settings.saved}">
+                                <h5 class="text-success text-center">Saved profile</h5>
+                            </jstl:if>
+
+                            <html:commandButton styleClass="btn btn-primary btn-block" value="Save"
+                                                action="#{settings.setProfile}">
+                                <face:ajax execute="@form" render="@form"/>
+                            </html:commandButton>
+                        </div>
+                    </div>
+                </fieldset>
+            </html:form>
+        </div>
+
+
+        <interface:include src="footer.xhtml"/>
+    </div>
+</div>
+
+</body>
+</html>

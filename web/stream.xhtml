@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html="http://xmlns.jcp.org/jsf/html"
+      xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:face="http://xmlns.jcp.org/jsf/core"
+      xmlns:prime="http://primefaces.org/ui">
+
+<interface:include src="header.xhtml"/>
+
+<body>
+
+<interface:include src="navbar-session.xhtml"/>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-xs-6 col-xs-offset-3 text-center">
+            <h4>
+                Stream
+            </h4>
+        </div>
+
+        <interface:include src="partial-friendlist.xhtml"/>
+
+
+        <div class="col-xs-6 col-xs-offset-3">
+
+            <html:form id="posts">
+                <prime:poll interval="5" update="posts"/>
+                <interface:repeat value="#{stream.posts}" var="post">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <html:commandLink styleClass="text-primary" action="profile?faces-redirect=true">
+                                <face:setPropertyActionListener value="#{post.sender.actor}"
+                                                                target="#{profile.username}"/>
+                                <html:outputText value="#{post.sender.firstName}"/>&nbsp;
+                                <html:outputText value="#{post.sender.lastName}"/>
+                            </html:commandLink>
+
+                            <div class="pull-right">
+                                <html:outputText value="#{post.date}"/>
+                            </div>
+
+                        </div>
+                        <div class="panel-body">
+                            <html:outputText value="#{post.content}"/>
+                        </div>
+                    </div>
+                </interface:repeat>
+            </html:form>
+        </div>
+
+
+        <interface:include src="footer.xhtml"/>
+    </div>
+</div>
+
+</body>
+</html>

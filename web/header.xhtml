@@ -1,0 +1,21 @@
+<html:head xmlns:html="http://java.sun.com/jsf/html" xmlns:face="http://java.sun.com/jsf/core">
+    <title>F+ - FacePlus! </title>
+    <link rel='shortcut icon' type='image/x-icon' href='resources/img/favicon.ico'/>
+    <html:outputStylesheet name="css/bootstrap.min.css"/>
+    <html:outputStylesheet name="css/style.css"/>
+
+    <face:facet name="first">
+        <html:outputScript library="primefaces" name="jquery/jquery.js"/>
+    </face:facet>
+
+    <html:outputScript library="js" name="bootstrap.min.js"/>
+
+    <html:outputScript>
+        jQuery(document).ready(function () {
+        jQuery('[data-toggle=tooltip]').tooltip();
+        <!--jQuery('body').dropdown({selector: '[data-toggle="dropdown"]'});-->
+        });
+    </html:outputScript>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+</html:head>

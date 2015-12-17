@@ -1,0 +1,60 @@
+.front-img {
+    height: auto;
+    width: auto;
+    min-width: 100%;
+    min-height: 246px;
+    opacity: 0.24;
+    filter: alpha(opacity=24)
+}
+
+.register-form {
+    height: 100%;
+}
+
+.thumbnail {
+    width: auto;
+    height: auto;
+    max-width: 96px;
+    max-height: 96px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 991px) {
+    .desktop-only {
+        display: none;
+    !important;
+    }
+}
+
+a:link {
+    color: #ffffff;
+}
+
+a:hover {
+    color: #959595;
+    text-decoration: none;
+}
+
+a:active {
+    color: #cc00ff;
+}
+
+a:visited {
+    color: #ffffff;
+}
+
+.topmargin18 {
+    margin-top: 18px;
+}
+
+.message-date {
+    margin-top: -6px;
+    margin-right: 24px;
+    margin-left: 24px;
+    font-size: smaller;
+}
+
+.messager-body {
+    height: 80%; !important;
+}

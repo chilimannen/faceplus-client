@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:html="http://xmlns.jcp.org/jsf/html"
+      xmlns:interface="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:face="http://xmlns.jcp.org/jsf/core"
+      xmlns:html5="http://xmlns.jcp.org/jsf/passthrough">
+
+<interface:include src="header.xhtml"/>
+
+<body>
+<interface:include src="navbar.xhtml"/>
+
+<face:view>
+    <div class="container-fluid">
+        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-1 col-lg-3 col-lg-offset-3">
+            <html:graphicImage name="img/front.svg" class="front-img"/>
+
+            <div class="text-center">
+                Just like Facebook, only less.. less..
+            </div>
+        </div>
+
+        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-1 col-lg-3 col-lg-offset-1 row register-form">
+            <h3>Create your account now!</h3>
+
+            <html:form>
+                <div class="form-group">
+                    <html:message for="username"/>
+                    <html:inputText id="username" class="form-control" html5:placeholder="Username"
+                                    value="#{account.username}">
+                        <face:validator validatorId="com.rduda.Controller.Validator.Username"/>
+                    </html:inputText>
+                </div>
+
+                <div class="form-group">
+                    <html:message for="firstname"/>
+                    <html:inputText class="form-control" id="firstname" required="true"
+                                    requiredMessage="Firstname required"
+                                    html5:placeholder="First name" value="#{account.firstName}"/>
+                </div>
+
+                <div class="form-group">
+                    <html:message for="lastname"/>
+                    <html:inputText class="form-control" id="lastname" required="true"
+                                    requiredMessage="Lastname required"
+                                    html5:placeholder="Last name" value="#{account.lastName}"/>
+                </div>
+
+                <div class="form-group">
+                    <html:message for="password"/>
+                    <html:inputSecret class="form-control" id="password" html5:placeholder="Password"
+                                      match="password-repeat"
+                                      value="#{account.password}">
+                        <face:validator validatorId="com.rduda.Controller.Validator.Password"/>
+                    </html:inputSecret>
+                </div>
+
+                <div class="form-group">
+                    <html:commandButton class="btn btn-primary btn-block"
+                                        html5:data-toggle="tooltip" html5:data-placement="bottom"
+                                        html5:data-original-title="Push this button to create your account."
+                                        value="Register"
+                                        action="#{account.register}">
+                        <face:ajax execute="@form" render="@form"/>
+                    </html:commandButton>
+                </div>
+            </html:form>
+        </div>
+    </div>
+</face:view>
+
+<interface:include src="footer.xhtml"/>
+</body>
+
+</html>
